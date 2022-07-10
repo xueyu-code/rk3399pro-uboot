@@ -1,0 +1,46 @@
+export ARCH=arm
+指定交叉编译链叫啥
+export CROSS_COMPILE=aarch64-linux-gnu-
+U-Boot指定编译工具链路径
+export PATH=$PATH:/home/book/toolchain/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin
+
+make CROSS_COMPILE=aarch64-linux-gnu- PLAT=rk3399 bl31
+export BL31=/home/book/arm-trusted-firmware/build/rk3399/release/bl31/bl31.elf
+
+生成U-BOOT配置文件
+make rock-pi-n10-rk3399pro_defconfig
+
+imx6ull 32soc
+rk3399 64soc
+
+ATF 它实现了各种 ARM 接口标准,尽可能代码旨在重用或移植到其他型号和硬件平台
+阿里云开源镜像站
+http://mirrors.aliyun.com/armbian-releases/_toolchain/
+需要安装的依赖
+apt-get install libsdl2-dev libssl-dev 
+apt-get install lib32ncurses5 lib32z1 
+apt-get install gcc-arm-none-eabi
+需要用到的链接
+https://releases.linaro.org/components/toolchain/binaries/6.3-2017.02/aarch64-linux-gnu   交叉编译工具链
+https://github.com/ARM-software/arm-trusted-firmware                                           ATF
+https://github.com/u-boot/u-boot                                                                      U-BOOT
+              
+大致流程，先生成RK3399 U-BOOT需要的ELF文件
+export CROSS_COMPILE=aarch64-linux-gnu-  手动指定用什么交叉编译链
+export PATH=$PATH:/home/book/toolchain/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin  指定路径
+make CROSS_COMPILE=aarch64-linux-gnu- PLAT=rk3399 bl31
+这一步会用到 gcc-arm-none-eabi 需要提前安装，，
+编译出ELF文件然后记录下路径
+make CROSS_COMPILE=aarch64-linux-gnu- PLAT=rk3399 bl31
+
+进行编译U-BOOT
+export ARCH=arm
+export CROSS_COMPILE=aarch64-linux-gnu-
+export PATH=$PATH:/home/book/toolchain/gcc-linaro-6.3.1-2017.02-x86_64_aarch64-linux-gnu/bin
+make distclean
+生成U-BOOT配置文件
+make rock-pi-n10-rk3399pro_defconfig
+最后make
+
+文件太大，超过个人仓库的单个文件容量上限了
+贴个视频流程的链接 防止自己忘掉https://www.bilibili.com/video/BV1d44y1g7pL/?vd_source=29e404362475816a9b91338131d83c58
